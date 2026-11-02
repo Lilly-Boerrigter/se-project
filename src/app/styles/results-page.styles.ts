@@ -1,0 +1,181 @@
+import { StyleSheet } from "react-native";
+import { COLORS } from "./splash-page.styles";
+
+export const RESULT_COLORS = {
+  openBg: "#E4F4EA",
+  openText: "#1E6B3A",
+  closedBg: "#ECEFF3",
+  closedText: "#4B5563",
+  live: "#2FA56A",
+};
+
+export const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: COLORS.bg },
+  container: { flex: 1 },
+
+  // Header
+  header: {
+    height: 52,
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  headerSide: { width: 80, minHeight: 44, justifyContent: "center" },
+  backBtn: { flexDirection: "row", alignItems: "center", gap: 6 },
+  backText: { fontSize: 15, fontWeight: "500", color: COLORS.navy },
+  headerTitle: { fontSize: 17, fontWeight: "600", color: COLORS.text },
+  headerRight: { alignItems: "flex-end" },
+
+  // Keyword summary box
+  searchBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginHorizontal: 16,
+    marginTop: 8,
+    minHeight: 52,
+    paddingHorizontal: 14,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 14,
+  },
+  searchText: { flex: 1, fontSize: 15, color: COLORS.text },
+
+  // Count row + filters
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    marginTop: 18,
+  },
+  count: { fontSize: 13, color: COLORS.muted },
+  cacheBadge: {
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    backgroundColor: COLORS.navyTint,
+    borderRadius: 999,
+  },
+  cacheBadgeText: { fontSize: 11.5, fontWeight: "500", color: COLORS.navy },
+  filters: {
+    flexDirection: "row",
+    gap: 8,
+    marginHorizontal: 16,
+    marginTop: 10,
+  },
+  pill: {
+    minHeight: 36,
+    paddingHorizontal: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.navyTint,
+    borderRadius: 999,
+  },
+  pillActive: { backgroundColor: COLORS.navy },
+  pillText: { fontSize: 13, fontWeight: "500", color: COLORS.navy },
+  pillTextActive: { color: COLORS.white },
+
+  // List + cards
+  list: { paddingHorizontal: 16, paddingTop: 12, paddingBottom: 120, gap: 10 },
+  card: {
+    padding: 14,
+    gap: 6,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 14,
+  },
+  cardTitle: { fontSize: 17, fontWeight: "600", color: COLORS.text },
+  badge: {
+    alignSelf: "flex-start",
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    borderRadius: 6,
+  },
+  badgeOpen: { backgroundColor: RESULT_COLORS.openBg },
+  badgeClosed: { backgroundColor: RESULT_COLORS.closedBg },
+  badgeText: { fontSize: 11.5, fontWeight: "600" },
+  badgeTextOpen: { color: RESULT_COLORS.openText },
+  badgeTextClosed: { color: RESULT_COLORS.closedText },
+  description: { fontSize: 14, color: COLORS.muted },
+  source: { fontSize: 12.5, color: COLORS.navy },
+  statusRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+  liveDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: RESULT_COLORS.live,
+  },
+  statusText: { fontSize: 12.5, color: COLORS.navy },
+  rankText: { fontSize: 12, color: COLORS.muted },
+  filterEmpty: {
+    textAlign: "center",
+    color: COLORS.muted,
+    fontSize: 14,
+    marginTop: 24,
+  },
+
+  // Ask AI bar
+  aiBar: {
+    position: "absolute",
+    left: 16,
+    right: 16,
+    bottom: 24,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    padding: 14,
+    backgroundColor: COLORS.navy,
+    borderRadius: 14,
+  },
+  aiIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.18)",
+  },
+  aiTextWrap: { flex: 1 },
+  aiTitle: { fontSize: 15, fontWeight: "600", color: COLORS.white },
+  aiSub: {
+    fontSize: 12.5,
+    lineHeight: 17,
+    color: "rgba(255,255,255,0.85)",
+    marginTop: 2,
+  },
+
+  // Loading + empty
+  center: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 32,
+  },
+  emptyTitle: {
+    fontSize: 24,
+    lineHeight: 30,
+    fontWeight: "500",
+    textAlign: "center",
+    color: COLORS.muted,
+    marginBottom: 10,
+  },
+  emptyBody: {
+    fontSize: 14.5,
+    lineHeight: 21,
+    textAlign: "center",
+    color: COLORS.muted,
+    marginBottom: 22,
+  },
+  primaryBtn: {
+    minHeight: 48,
+    paddingHorizontal: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.navy,
+    borderRadius: 12,
+  },
+  primaryText: { fontSize: 15, fontWeight: "600", color: COLORS.white },
+});

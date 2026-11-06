@@ -14,8 +14,10 @@ import { COLORS } from "../styles/splash-page.styles";
 import { DatabaseResult, getResultsForKeywords } from "./resultsRepo";
 import { useResultsDatabase } from "../../components/resultsDatabase";
 import React from "react";
+import type { SearchFilters } from "./SplashPage";
 
 type Filter = "all" | "open" | "closed";
+export type { SearchFilters };
 
 type Props = {
   keywords: string[];
@@ -24,6 +26,7 @@ type Props = {
   onEditKeywords?: () => void;
   onAskAI?: () => void;
   onResultsLoaded?: (results: DatabaseResult[]) => void;
+  filters?: SearchFilters;
 };
 
 function timeAgo(ms: number): string {
@@ -47,6 +50,7 @@ export default function ResultsPage({
   onEditKeywords,
   onAskAI,
   onResultsLoaded,
+  filters = { source: "all", verifiedOnly: false },
 }: Props) {
   const db = useResultsDatabase();
   const [results, setResults] = useState<DatabaseResult[] | null>(null); // null = loading
@@ -81,10 +85,19 @@ export default function ResultsPage({
 
   const visible = useMemo(() => {
     if (!results) return [];
-    if (filter === "open") return results.filter((r) => r.isOpenSource);
-    if (filter === "closed") return results.filter((r) => !r.isOpenSource);
-    return results;
-  }, [results, filter]);
+    return results.filter((result) => {
+      const sourceMatches =
+        filters.source === "all" ||
+        (filters.source === "open" && result.isOpenSource) ||
+        (filters.source === "closed" && !result.isOpenSource);
+      const verifiedMatches = !filters.verifiedOnly || result.verifiedAt > 0;
+      const tabMatches =
+        filter === "all" ||
+        (filter === "open" && result.isOpenSource) ||
+        (filter === "closed" && !result.isOpenSource);
+      return sourceMatches && verifiedMatches && tabMatches;
+    });
+  }, [results, filter, filters]);
 
   const isEmpty = results !== null && results.length === 0;
 

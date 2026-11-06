@@ -1,18 +1,30 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo } from "react";
 import ResultsPage from "./components/ResultsPage";
+import type { SearchFilters } from "./components/SplashPage";
 import React from "react";
 import { useResultsDatabase } from "../components/resultsDatabase";
 import { recordHistory, updateHistoryResults } from "../components/historyStore";
 import type { DatabaseResult } from "./components/resultsRepo";
 
 export default function Results() {
-  const { keywords } = useLocalSearchParams<{ keywords: string }>();
+  const { keywords, source, verified } = useLocalSearchParams<{
+    keywords: string;
+    source?: SearchFilters["source"];
+    verified?: string;
+  }>();
   const list = useMemo(
     () => (keywords ?? "").split(",").filter(Boolean),
     [keywords],
   );
   const db = useResultsDatabase();
+  const filters = useMemo<SearchFilters>(
+    () => ({
+      source: source === "open" || source === "closed" ? source : "all",
+      verifiedOnly: verified === "true",
+    }),
+    [source, verified],
+  );
   const handleResultsLoaded = useCallback(
     (results: DatabaseResult[]) => {
       void updateHistoryResults(db, list, results.length > 0);
@@ -30,6 +42,7 @@ export default function Results() {
       onBack={() => router.back()}
       onEditKeywords={() => router.back()}
       onResultsLoaded={handleResultsLoaded}
+      filters={filters}
     />
   );
 }

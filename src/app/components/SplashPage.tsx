@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -26,7 +27,22 @@ export default function SplashPage({
 }: Props) {
   const [keywords, setKeywords] = useState<string[]>([]);
   const [draft, setDraft] = useState("");
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
   const inputRef = useRef<React.ComponentRef<typeof TextInput>>(null);
+
+  React.useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () =>
+      setKeyboardVisible(true),
+    );
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () =>
+      setKeyboardVisible(false),
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   // Turns the current draft text into a chip (comma or Enter triggers this).
   const commitDraft = (text: string = draft) => {
@@ -60,6 +76,8 @@ export default function SplashPage({
     if (unique.length === 0 || isLoading) return;
     setKeywords(unique);
     setDraft("");
+    inputRef.current?.blur();
+    Keyboard.dismiss();
     console.log("search pressed", unique, "onSearch is", typeof onSearch);
     onSearch?.(unique);
   };
@@ -68,9 +86,15 @@ export default function SplashPage({
     <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView
         style={styles.flex}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <View style={styles.container}>
+        <Pressable
+          style={styles.container}
+          onPress={() => {
+            inputRef.current?.blur();
+            Keyboard.dismiss();
+          }}
+        >
           {/* Brand */}
           <View style={styles.brand}>
             <Ionicons name="book-outline" size={22} color={COLORS.navy} />
@@ -88,7 +112,10 @@ export default function SplashPage({
             {/* Keyword chip input */}
             <Pressable
               style={styles.inputBox}
-              onPress={() => inputRef.current?.focus()}
+              onPress={(event) => {
+                event.stopPropagation();
+                inputRef.current?.focus();
+              }}
               accessibilityRole="none"
             >
               {keywords.map((word) => (
@@ -115,10 +142,12 @@ export default function SplashPage({
                   value={draft}
                   onChangeText={handleChangeText}
                   onSubmitEditing={() => commitDraft()}
+                  onFocus={() => setKeyboardVisible(true)}
+                  onBlur={() => setKeyboardVisible(false)}
                   placeholder="Type a keyword"
                   placeholderTextColor={COLORS.muted}
                   returnKeyType="done"
-                  blurOnSubmit={false}
+                  blurOnSubmit
                   autoCapitalize="none"
                   autoCorrect={false}
                   editable={!isLoading}
@@ -183,13 +212,15 @@ export default function SplashPage({
           </View>
 
           {/* Footer */}
-          <View style={styles.footer}>
-            <Text style={styles.footerLabel}>YOUR DATABASE DISCOVERY TOOL</Text>
-            <Text style={styles.footerText}>
-              Search web databases. Save sets. Ask AI questions.
-            </Text>
-          </View>
-        </View>
+          {!keyboardVisible && (
+            <View style={styles.footer}>
+              <Text style={styles.footerLabel}>YOUR DATABASE DISCOVERY TOOL</Text>
+              <Text style={styles.footerText}>
+                Search web databases. Save sets. Ask AI questions.
+              </Text>
+            </View>
+          )}
+        </Pressable>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -23,6 +23,7 @@ type Props = {
   onBack?: () => void;
   onEditKeywords?: () => void;
   onAskAI?: () => void;
+  onResultsLoaded?: (results: DatabaseResult[]) => void;
 };
 
 function timeAgo(ms: number): string {
@@ -45,6 +46,7 @@ export default function ResultsPage({
   onBack,
   onEditKeywords,
   onAskAI,
+  onResultsLoaded,
 }: Props) {
   const db = useResultsDatabase();
   const [results, setResults] = useState<DatabaseResult[] | null>(null); // null = loading
@@ -60,12 +62,22 @@ export default function ResultsPage({
       };
     }
     getResultsForKeywords(db, keywords)
-      .then((rows) => !cancelled && setResults(rows))
-      .catch(() => !cancelled && setResults([]));
+      .then((rows) => {
+        if (!cancelled) {
+          setResults(rows);
+          onResultsLoaded?.(rows);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setResults([]);
+          onResultsLoaded?.([]);
+        }
+      });
     return () => {
       cancelled = true;
     };
-  }, [db, keywords]);
+  }, [db, keywords, onResultsLoaded]);
 
   const visible = useMemo(() => {
     if (!results) return [];
@@ -115,6 +127,15 @@ export default function ResultsPage({
             <Ionicons name="close" size={18} color={COLORS.muted} />
           </Pressable>
         </View>
+        <Pressable
+          style={styles.searchAgainButton}
+          onPress={onEditKeywords}
+          accessibilityRole="button"
+          accessibilityLabel="Search again"
+        >
+          <Ionicons name="refresh-outline" size={16} color={COLORS.navy} />
+          <Text style={styles.searchAgainText}>Search Again</Text>
+        </Pressable>
 
         {results === null ? (
           <View style={styles.center}>
@@ -130,13 +151,6 @@ export default function ResultsPage({
               Try broadening your keywords to discover more open-source and
               closed databases.
             </Text>
-            <Pressable
-              style={styles.primaryBtn}
-              onPress={onEditKeywords}
-              accessibilityRole="button"
-            >
-              <Text style={styles.primaryText}>Edit keywords</Text>
-            </Pressable>
           </View>
         ) : (
           <>

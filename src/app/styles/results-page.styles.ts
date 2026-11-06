@@ -42,6 +42,19 @@ export const styles = StyleSheet.create({
     borderRadius: 14,
   },
   searchText: { flex: 1, fontSize: 15, color: COLORS.text },
+  searchAgainButton: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginHorizontal: 16,
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: COLORS.navyTint,
+    borderRadius: 999,
+  },
+  searchAgainText: { fontSize: 13, fontWeight: "600", color: COLORS.navy },
 
   // Count row + filters
   metaRow: {

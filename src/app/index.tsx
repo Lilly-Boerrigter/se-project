@@ -11,6 +11,7 @@ export default function Index() {
           params: { keywords: keywords.join(",") },
         })
       }
+      onHistory={() => router.push("/history")}
     />
   );
 }

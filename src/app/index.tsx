@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import SplashPage from "./components/SplashPage";
+import React from "react";
 
 export default function Index() {
   return (

@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import ResultsPage from "./components/ResultsPage";
+import React from "react";
 
 export default function Results() {
   const { keywords } = useLocalSearchParams<{ keywords: string }>();

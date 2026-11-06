@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { COLORS, styles } from "../styles/splash-page.styles";
+import React from "react";
 
 type Props = {
   isLoading?: boolean;
@@ -25,7 +26,7 @@ export default function SplashPage({
 }: Props) {
   const [keywords, setKeywords] = useState<string[]>([]);
   const [draft, setDraft] = useState("");
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<React.ComponentRef<typeof TextInput>>(null);
 
   // Turns the current draft text into a chip (comma or Enter triggers this).
   const commitDraft = (text: string = draft) => {

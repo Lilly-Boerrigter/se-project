@@ -1,5 +1,4 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useMemo, useState } from "react";
 import {
     ActivityIndicator,
@@ -13,6 +12,8 @@ import {
 import { RESULT_COLORS, styles } from "../styles/results-page.styles";
 import { COLORS } from "../styles/splash-page.styles";
 import { DatabaseResult, getResultsForKeywords } from "./resultsRepo";
+import { useResultsDatabase } from "../../components/resultsDatabase";
+import React from "react";
 
 type Filter = "all" | "open" | "closed";
 
@@ -45,13 +46,19 @@ export default function ResultsPage({
   onEditKeywords,
   onAskAI,
 }: Props) {
-  const db = useSQLiteContext();
+  const db = useResultsDatabase();
   const [results, setResults] = useState<DatabaseResult[] | null>(null); // null = loading
   const [filter, setFilter] = useState<Filter>("all");
 
   useEffect(() => {
     let cancelled = false;
     setResults(null);
+    if (!db) {
+      setResults([]);
+      return () => {
+        cancelled = true;
+      };
+    }
     getResultsForKeywords(db, keywords)
       .then((rows) => !cancelled && setResults(rows))
       .catch(() => !cancelled && setResults([]));

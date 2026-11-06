@@ -118,6 +118,45 @@ export default function SplashPage({
               }}
               accessibilityRole="none"
             >
+              <View style={styles.inputPill}>
+                <Pressable
+                  onPress={(event) => {
+                    event.stopPropagation();
+                    commitDraft();
+                    inputRef.current?.blur();
+                    Keyboard.dismiss();
+                  }}
+                  hitSlop={8}
+                  accessibilityRole="button"
+                  accessibilityLabel="Add keyword"
+                >
+                  <Ionicons
+                    name="add-circle-outline"
+                    size={17}
+                    color={COLORS.navy}
+                  />
+                </Pressable>
+                <TextInput
+                  ref={inputRef}
+                  style={styles.input}
+                  value={draft}
+                  onChangeText={handleChangeText}
+                  onSubmitEditing={() => {
+                    commitDraft();
+                    Keyboard.dismiss();
+                  }}
+                  onFocus={() => setKeyboardVisible(true)}
+                  onBlur={() => setKeyboardVisible(false)}
+                  placeholder="Type a keyword"
+                  placeholderTextColor={COLORS.muted}
+                  returnKeyType="done"
+                  blurOnSubmit
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  editable={!isLoading}
+                  accessibilityLabel="Type a keyword"
+                />
+              </View>
               {keywords.map((word) => (
                 <View key={word} style={styles.chip}>
                   <Text style={styles.chipText}>{word}</Text>
@@ -135,26 +174,6 @@ export default function SplashPage({
                   </Pressable>
                 </View>
               ))}
-              <View style={styles.inputPill}>
-                <TextInput
-                  ref={inputRef}
-                  style={styles.input}
-                  value={draft}
-                  onChangeText={handleChangeText}
-                  onSubmitEditing={() => commitDraft()}
-                  onFocus={() => setKeyboardVisible(true)}
-                  onBlur={() => setKeyboardVisible(false)}
-                  placeholder="Type a keyword"
-                  placeholderTextColor={COLORS.muted}
-                  returnKeyType="done"
-                  blurOnSubmit
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  editable={!isLoading}
-                  accessibilityLabel="Keyword"
-                />
-                <Text style={styles.inputHint}>, / Enter</Text>
-              </View>
             </Pressable>
             <Text style={styles.note}>
               Order doesn't matter. Repeat searches load instantly from your

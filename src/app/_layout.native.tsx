@@ -5,7 +5,7 @@ import React from "react";
 export default function NativeRootLayout() {
   return (
     <SQLiteProvider databaseName="se-project.db">
-      <Stack />
+      <Stack screenOptions={{ headerShown: false }} />
     </SQLiteProvider>
   );
 }

@@ -1,0 +1,43 @@
+import { StyleSheet } from "react-native";
+
+export const COLORS = {
+  bg: "#FAFAF6",
+  navy: "#2B4F7E",
+  navyTint: "#EAF0F7",
+  text: "#1F2A3C",
+  muted: "#5B6472",
+  border: "#E3E6EA",
+  white: "#FFFFFF",
+};
+
+export const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: COLORS.bg },
+  container: { flex: 1, paddingHorizontal: 24, paddingTop: 16 },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 28,
+  },
+  editText: { fontSize: 15, fontWeight: "600", color: COLORS.navy },
+  title: { fontSize: 22, fontWeight: "600", color: COLORS.text },
+  empty: { flex: 1, alignItems: "center", justifyContent: "center", paddingBottom: 80 },
+  emptyTitle: { marginTop: 12, fontSize: 22, fontWeight: "600", color: COLORS.text },
+  emptyBody: { marginTop: 8, fontSize: 14, color: COLORS.muted },
+  list: { gap: 10 },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 14,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 14,
+    backgroundColor: COLORS.white,
+  },
+  entry: { flex: 1, flexDirection: "row", alignItems: "center", gap: 10 },
+  entryText: { flex: 1, gap: 3 },
+  keywords: { fontSize: 16, color: COLORS.text },
+  noResults: { fontSize: 12, color: COLORS.muted },
+  againButton: { paddingVertical: 7, paddingHorizontal: 10, backgroundColor: COLORS.navyTint, borderRadius: 999 },
+  againText: { fontSize: 12, fontWeight: "600", color: COLORS.navy },
+});
